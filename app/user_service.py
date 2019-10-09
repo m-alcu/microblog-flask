@@ -17,9 +17,6 @@ def get(id):
 
 def get_all():
     users = User.query.all()
-    users_list = []
-    for u in users:
-        users_list.append(utils.row2dict(u))
-    return(users_list)
+    return([utils.row2dict(u) for u in users])
 
 

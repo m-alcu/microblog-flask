@@ -20,7 +20,7 @@ user_model = app.model('User Model',
 		'email': fields.String(required = True,	description="email of the person", help="email of the person"),
 		'password_hash': fields.String(required = False, description="password hash", help="password hash"),
 		'created_on': fields.DateTime(required = False, description="created on", help="created on"),
-		'updated_on': fields.String(required = False, description="updated on", help="updated on")
+		'updated_on': fields.DateTime(required = False, description="updated on", help="updated on")
 	})
 
 post_model = app.model('Post Model',
@@ -30,7 +30,7 @@ post_model = app.model('Post Model',
 		'timestamp': fields.DateTime(required = True,	description="timestamp", help="timestamp"),
 		'user_id': fields.String(required = False, description="user id", help="user id"),
 		'created_on': fields.DateTime(required = False, description="created on", help="created on"),
-		'updated_on': fields.String(required = False, description="updated on", help="updated on")
+		'updated_on': fields.DateTime(required = False, description="updated on", help="updated on")
 	})	
 
 @user_space.route("/")

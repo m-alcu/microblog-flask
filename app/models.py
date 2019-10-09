@@ -1,6 +1,6 @@
 from datetime import datetime
 from app import db
-
+from sqlalchemy.orm import validates
 
 class Base(db.Model):
     __abstract__ = True
@@ -15,6 +15,11 @@ class User(Base):
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
+    @validates('email')
+    def validate_email(self, key, address):
+        assert '@' in address, 'Email should contain @'
+        return address
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -23,6 +28,11 @@ class Post(Base):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    @validates('user_id')
+    def validate_email(self, key, user_id):
+        assert user_id != None, 'User must be filled!!'
+        return user_id
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
