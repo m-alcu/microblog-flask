@@ -4,6 +4,7 @@ from app import flask_app
 from app import user_service
 from app import post_service
 import logging
+from app import utils
 
 app = Api(app = flask_app, 
     version = "1.0", 
@@ -40,10 +41,10 @@ class AllUsersClass(Resource):
 	def get(self):
 		try:
 			return user_service.get_all()
-		except KeyError as e:
-			user_space.abort(500, e.__doc__, status = "Could not retrieve information", statusCode = "500")
+		except AssertionError as e:
+			user_space.abort(400, e.args[0], status = "Could not get all users", statusCode = "400")
 		except Exception as e:
-			user_space.abort(400, e.__doc__, status = "Could not retrieve information", statusCode = "400")
+			user_space.abort(500, e.args[0], status = "Could not get all users", statusCode = "500")
 
 @user_space.route("/<int:id>")
 class UserClass(Resource):
@@ -54,10 +55,10 @@ class UserClass(Resource):
 		try:
 			flask_app.logger.debug('We are getting the user: %d', id)
 			return user_service.get(id)
-		except KeyError as e:
-			user_space.abort(500, e.__doc__, status = "Could not retrieve information", statusCode = "500")
+		except AssertionError as e:
+			user_space.abort(400, e.args[0], status = "Could not get user", statusCode = "400")
 		except Exception as e:
-			user_space.abort(400, e.__doc__, status = "Could not retrieve information", statusCode = "400")
+			user_space.abort(500, e.args[0], status = "Could not get user", statusCode = "500")
 
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 
 			 params={ 'id': 'Specify the Id associated with the person' })
@@ -66,10 +67,10 @@ class UserClass(Resource):
 		try:
 			user_service.add(request.json)
 			return user_service.get(id)
-		except KeyError as e:
-			user_space.abort(500, e.__doc__, status = "Could not insert information", statusCode = "500")
+		except AssertionError as e:
+			user_space.abort(400, e.args[0], status = "Could not insert user", statusCode = "400")
 		except Exception as e:
-			user_space.abort(400, e.__doc__, status = "Could not insert information", statusCode = "400")
+			user_space.abort(500, e.args[0], status = "Could not insert user", statusCode = "500")
 
 
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 
@@ -77,10 +78,10 @@ class UserClass(Resource):
 	def delete(self, id):
 		try:
 			user_service.delete(id)
-		except KeyError as e:
-			user_space.abort(500, e.__doc__, status = "Could not delete information", statusCode = "500")
+		except AssertionError as e:
+			user_space.abort(400, e.args[0], status = "Could not delete user", statusCode = "400")
 		except Exception as e:
-			user_space.abort(400, e.__doc__, status = "Could not delete information", statusCode = "400")			
+			user_space.abort(500, e.args[0], status = "Could not delete user", statusCode = "500")
 
 @post_space.route("/")
 class AllPostClass(Resource):
@@ -89,10 +90,10 @@ class AllPostClass(Resource):
 	def get(self):
 		try:
 			return post_service.get_all()
-		except KeyError as e:
-			post_space.abort(500, e.__doc__, status = "Could not retrieve information", statusCode = "500")
+		except AssertionError as e:
+			post_space.abort(400, e.args[0], status = "Could not get all posts", statusCode = "400")
 		except Exception as e:
-			post_space.abort(400, e.__doc__, status = "Could not retrieve information", statusCode = "400")
+			post_space.abort(500, e.args[0], status = "Could not get all posts", statusCode = "500")
 
 @post_space.route("/<int:id>")
 class PostClass(Resource):
@@ -102,10 +103,10 @@ class PostClass(Resource):
 	def get(self, id):
 		try:
 			return post_service.get(id)
-		except KeyError as e:
-			post_space.abort(500, e.__doc__, status = "Could not retrieve information", statusCode = "500")
+		except AssertionError as e:
+			post_space.abort(400, e.args[0], status = "Could not get post", statusCode = "400")
 		except Exception as e:
-			post_space.abort(400, e.__doc__, status = "Could not retrieve information", statusCode = "400")
+			post_space.abort(500, e.args[0], status = "Could not get post", statusCode = "500")
 
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 
 			 params={ 'id': 'Specify the Id associated with the person' })
@@ -114,10 +115,10 @@ class PostClass(Resource):
 		try:
 			post_service.add(request.json)
 			return post_service.get(id)
-		except KeyError as e:
-			post_space.abort(500, e.__doc__, status = "Could not insert information", statusCode = "500")
+		except AssertionError as e:
+			post_space.abort(400, e.args[0], status = "Could not insert post", statusCode = "400")
 		except Exception as e:
-			post_space.abort(400, e.__doc__, status = "Could not insert information", statusCode = "400")
+			post_space.abort(500, e.args[0], status = "Could not insert post", statusCode = "500")
 
 
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 
@@ -125,7 +126,7 @@ class PostClass(Resource):
 	def delete(self, id):
 		try:
 			post_service.delete(id)
-		except KeyError as e:
-			post_space.abort(500, e.__doc__, status = "Could not delete information", statusCode = "500")
+		except AssertionError as e:
+			post_space.abort(400, e.args[0], status = "Could not delete post", statusCode = "400")
 		except Exception as e:
-			post_space.abort(400, e.__doc__, status = "Could not delete information", statusCode = "400")			
+			post_space.abort(500, e.args[0], status = "Could not delete post", statusCode = "500")
