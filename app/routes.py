@@ -11,8 +11,8 @@ app = Api(app = flask_app,
 	title = "Simple Blog", 
 	description = "Manage Blog entities")
 
-user_space = app.namespace('users', description='Users')
-post_space = app.namespace('posts', description='Post')
+user_space = app.namespace('users', description='Blog Users')
+post_space = app.namespace('posts', description='User Posts')
 
 user_model = app.model('User Model',
     {
@@ -39,6 +39,9 @@ class AllUsersClass(Resource):
 
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' })
 	def get(self):
+		"""
+		returns all users
+		"""
 		try:
 			return user_service.get_all()
 		except AssertionError as e:
@@ -52,6 +55,9 @@ class UserClass(Resource):
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 
 			 params={ 'id': 'Specify the Id associated with the person' })
 	def get(self, id):
+		"""
+		returns user by id
+		"""
 		try:
 			flask_app.logger.debug('We are getting the user: %d', id)
 			return user_service.get(id)
@@ -64,6 +70,9 @@ class UserClass(Resource):
 			 params={ 'id': 'Specify the Id associated with the person' })
 	@app.expect(user_model)		
 	def post(self, id):
+		"""
+		inserts a user
+		"""
 		try:
 			user_service.add(request.json)
 			return user_service.get(id)
@@ -76,6 +85,9 @@ class UserClass(Resource):
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 
 			 params={ 'id': 'Specify the Id associated with the entity' })
 	def delete(self, id):
+		"""
+		deletes a user by id
+		"""
 		try:
 			user_service.delete(id)
 		except AssertionError as e:
@@ -88,6 +100,9 @@ class AllPostClass(Resource):
 
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' })
 	def get(self):
+		"""
+		returns all posts
+		"""		
 		try:
 			return post_service.get_all()
 		except AssertionError as e:
@@ -101,6 +116,9 @@ class PostClass(Resource):
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 
 			 params={ 'id': 'Specify the Id associated with the person' })
 	def get(self, id):
+		"""
+		returns a post by id
+		"""		
 		try:
 			return post_service.get(id)
 		except AssertionError as e:
@@ -112,6 +130,9 @@ class PostClass(Resource):
 			 params={ 'id': 'Specify the Id associated with the person' })
 	@app.expect(post_model)		
 	def post(self, id):
+		"""
+		inserts a post
+		"""		
 		try:
 			post_service.add(request.json)
 			return post_service.get(id)
@@ -124,6 +145,9 @@ class PostClass(Resource):
 	@app.doc(responses={ 200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' }, 
 			 params={ 'id': 'Specify the Id associated with the entity' })
 	def delete(self, id):
+		"""
+		deletes a post by id
+		"""		
 		try:
 			post_service.delete(id)
 		except AssertionError as e:
