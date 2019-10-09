@@ -3,7 +3,7 @@ from flask_restplus import Api, Resource, fields
 from app import flask_app
 from app import user_service
 from app import post_service
-
+import logging
 
 app = Api(app = flask_app, 
     version = "1.0", 
@@ -52,6 +52,7 @@ class UserClass(Resource):
 			 params={ 'id': 'Specify the Id associated with the person' })
 	def get(self, id):
 		try:
+			flask_app.logger.debug('We are getting the user: %d', id)
 			return user_service.get(id)
 		except KeyError as e:
 			user_space.abort(500, e.__doc__, status = "Could not retrieve information", statusCode = "500")
