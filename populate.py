@@ -1,13 +1,9 @@
 from app import flask_app
 from sqlalchemy.sql import text
 from sqlalchemy import create_engine
-import os
-basedir = os.path.abspath(os.path.dirname(__file__))
+from config import Config
 
-SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'app.db')
-
-engine = create_engine(SQLALCHEMY_DATABASE_URI)
+engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
 
 with engine.connect() as con:
 
